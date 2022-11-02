@@ -10,6 +10,8 @@ from .serializers import FollowSerializer, ShowFollowersSerializer
 
 
 class FollowView(APIView):
+    """"View для подиски и отписки"""
+
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, id):
@@ -39,6 +41,8 @@ class FollowView(APIView):
 
 
 class FollowListView(ListAPIView):
+    """"View для выввода списка фолловеров."""
+
     pagination_class = PageNumberPagination
     permission_classes = (IsAuthenticated,)
 

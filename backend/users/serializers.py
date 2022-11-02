@@ -7,6 +7,7 @@ from .models import CustomUser, Follow
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
+    """"Сериализатор для созданий кастомного пользователя."""
 
     class Meta(UserCreateSerializer.Meta):
         model = CustomUser
@@ -21,6 +22,8 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
 
 class CustomUserSerializer(UserSerializer):
+    """"Сериализатор для кастомного пользователя."""
+
     is_subscribed = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -36,6 +39,7 @@ class CustomUserSerializer(UserSerializer):
 
 
 class FollowSerializer(serializers.ModelSerializer):
+    """"Сериализатор для подписки."""
 
     class Meta:
         model = Follow
@@ -56,6 +60,9 @@ class FollowSerializer(serializers.ModelSerializer):
 
 
 class FollowRecipeSerializer(serializers.ModelSerializer):
+    """"
+    Сериализатор для выввода рецептов пользователей на которых мы подписаны.
+    """
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'image', 'cooking_time')
@@ -63,6 +70,7 @@ class FollowRecipeSerializer(serializers.ModelSerializer):
 
 
 class ShowFollowersSerializer(serializers.ModelSerializer):
+    """"Сериализатор выввода подписок."""
 
     recipes = serializers.SerializerMethodField(read_only=True)
     recipes_count = serializers.SerializerMethodField(read_only=True)

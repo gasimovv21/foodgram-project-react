@@ -7,6 +7,7 @@ from .models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
 
 
 class IngredientSerializer(serializers.ModelSerializer):
+    """"Сериализатор для ингредиентов."""
 
     class Meta:
         model = Ingredient
@@ -15,6 +16,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
+    """"Сериализатор для тэгов."""
 
     class Meta:
         model = Tag
@@ -23,6 +25,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class ShowRecipeSerializer(serializers.ModelSerializer):
+    """"Сериализатор для выввода рецепта."""
 
     class Meta:
         model = Recipe
@@ -30,6 +33,8 @@ class ShowRecipeSerializer(serializers.ModelSerializer):
 
 
 class IngredientInRecipeSerializer(serializers.ModelSerializer):
+    """"Сериализатор для ингредиентов которые нужны для рецепта."""
+
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
@@ -41,6 +46,8 @@ class IngredientInRecipeSerializer(serializers.ModelSerializer):
 
 
 class AddIngredientSerializer(serializers.ModelSerializer):
+    """"Сериализатор для добавление ингредиента."""
+
     id = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
     amount = serializers.IntegerField()
 
@@ -50,6 +57,8 @@ class AddIngredientSerializer(serializers.ModelSerializer):
 
 
 class RecipesSerializers(serializers.ModelSerializer):
+    """"Сериализатор для общих рецептов."""
+
     author = CustomUserSerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     ingredients = serializers.SerializerMethodField(read_only=True)
@@ -80,6 +89,8 @@ class RecipesSerializers(serializers.ModelSerializer):
 
 
 class CreateRecipeSerializers(serializers.ModelSerializer):
+    """"Сериализатор для создание рецепта."""
+
     author = CustomUserSerializer(read_only=True)
     ingredients = AddIngredientSerializer(many=True)
     image = Base64ImageField()
@@ -165,6 +176,7 @@ class CreateRecipeSerializers(serializers.ModelSerializer):
 
 
 class FavoriteRecipeSerializer(serializers.ModelSerializer):
+    """"Сериализатор для избранных рецептов."""
 
     class Meta:
         model = Favorite
@@ -189,6 +201,7 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
 
 
 class ShoppingCartSerializer(serializers.ModelSerializer):
+    """"Сериализатор для списка покупок."""
 
     class Meta:
         model = ShoppingCart
