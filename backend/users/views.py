@@ -28,7 +28,7 @@ class FollowView(APIView):
         user = request.user
         following = get_object_or_404(CustomUser, id=id)
         follow = get_object_or_404(Follow, user=user, author=following)
-        if user.id == follow.id:
+        if not follow:
             return Response(
                 'Вы не можете отписаться не имея подписку на автора.',
                 status=status.HTTP_400_BAD_REQUEST)

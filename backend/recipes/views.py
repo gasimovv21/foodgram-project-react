@@ -11,13 +11,17 @@ from rest_framework.response import Response
 from .filters import IngredientSearchFilter, RecipeFilter
 from .models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                      ShoppingCart, Tag)
-from .permissions import IsAdminOrAuthorOrReadOnly
+from .permissions import IsAuthorOrReadOnly
 from .serializers import (CreateRecipeSerializers, FavoriteRecipeSerializer,
                           IngredientSerializer, RecipesSerializers,
                           ShoppingCartSerializer, TagSerializer)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet для работы с ингредиентами.
+    Ингредиент может добавлять только администратор.
+    """
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     permission_classes = (AllowAny, )
@@ -26,17 +30,24 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
-    pagination_class = None
+    """
+    ViewSet для работы с тегами. Тег может добавлять только администратор.
+    """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (AllowAny,)
+    pagination_class = None
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet для работы с рецептами.
+    Анонимы могут только просматривать рецепты.
+    """
     queryset = Recipe.objects.all()
     filter_backends = [DjangoFilterBackend]
     filter_class = RecipeFilter
-    permission_classes = (IsAdminOrAuthorOrReadOnly,)
+    permission_classes = [IsAuthorOrReadOnly]
     pagination_class = PageNumberPagination
 
     def get_serializer_class(self):
@@ -57,18 +68,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['POST'],
-            permission_classes=[IsAuthenticated])
-    def favorite(self, request, pk):
-        return self.post_method_for_actions(
-            request=request, pk=pk, serializers=FavoriteRecipeSerializer)
-
-    @action(detail=True, methods=['POST'],
-            permission_classes=[IsAuthenticated])
-    def shopping_cart(self, request, pk):
-        return self.post_method_for_actions(
-            request=request, pk=pk, serializers=ShoppingCartSerializer)
-
     @staticmethod
     def delete_method_for_actions(request, pk, model):
         user = request.user
@@ -77,24 +76,41 @@ class RecipeViewSet(viewsets.ModelViewSet):
         model_obj.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    @action(detail=True, methods=['POST'],
+            permission_classes=[IsAuthenticated])
+    def favorite(self, request, pk):
+        return self.post_method_for_actions(
+            request=request, pk=pk, serializers=FavoriteRecipeSerializer)
+
     @favorite.mapping.delete
     def delete_favorite(self, request, pk):
-        return self.delete_method_for_actions(request=request, pk=pk,
-                                              model=Favorite)
+        return self.delete_method_for_actions(
+            request=request, pk=pk,
+            model=Favorite)
+
+    @action(detail=True, methods=['POST'],
+            permission_classes=[IsAuthenticated])
+    def shopping_cart(self, request, pk):
+        return self.post_method_for_actions(
+            request=request, pk=pk, serializers=ShoppingCartSerializer)
 
     @shopping_cart.mapping.delete
     def delete_shopping_cart(self, request, pk):
-        return self.delete_method_for_actions(request=request, pk=pk,
-                                              model=ShoppingCart)
+        return self.delete_method_for_actions(
+            request=request, pk=pk,
+            model=ShoppingCart)
 
     @action(detail=False, methods=['GET'],
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
         user_shopping_cart = IngredientInRecipe.objects.filter(
             recipe__shopping_cart__user=request.user).values_list(
-            'ingredient__name', 'amount', 'ingredient__measurement_unit')
+            'ingredient__name',
+            'amount',
+            'ingredient__measurement_unit')
         all_count_ingredients = user_shopping_cart.values(
-            'ingredient__name', 'ingredient__measurement_unit').annotate(
+            'ingredient__name',
+            'ingredient__measurement_unit').annotate(
             total=Sum('amount')).order_by('-total')
         ingredients_list = []
         for ingredient in all_count_ingredients:

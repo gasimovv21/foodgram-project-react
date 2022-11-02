@@ -30,10 +30,9 @@ class CustomUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
-        if not request.user.is_anonymous:
-            return Follow.objects.filter(
-                user=request.user, author=obj).exists()
-        return False
+        if not request or request.user.is_anonymous:
+            return False
+        return Follow.objects.filter(user=request.user, author=obj).exists()
 
 
 class FollowSerializer(serializers.ModelSerializer):
@@ -41,7 +40,7 @@ class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow
         fields = '__all__'
-        ordering = ['-id']
+        ordering = ['id']
         validators = [
             UniqueTogetherValidator(
                 queryset=Follow.objects.all(),
@@ -60,7 +59,7 @@ class FollowRecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'image', 'cooking_time')
-        ordering = ['-id']
+        ordering = ['id']
 
 
 class ShowFollowersSerializer(serializers.ModelSerializer):
@@ -73,7 +72,7 @@ class ShowFollowersSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('email', 'id', 'username', 'first_name',
                   'last_name', 'is_subscribed', 'recipes', 'recipes_count')
-        ordering = ['-id']
+        ordering = ['id']
 
     def get_is_subscribed(self, obj):
         request = self.context.get('request')
