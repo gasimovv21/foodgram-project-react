@@ -1,6 +1,6 @@
+from recipes.pagination import CustomPageNumberPagination
 from rest_framework import status
 from rest_framework.generics import ListAPIView, get_object_or_404
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -43,7 +43,7 @@ class FollowView(APIView):
 class FollowListView(ListAPIView):
     """"View для выввода списка фолловеров."""
 
-    pagination_class = PageNumberPagination
+    pagination_class = CustomPageNumberPagination
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):

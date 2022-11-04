@@ -24,7 +24,7 @@ Jinja2==3.1.2
 MarkupSafe==2.1.1
 mccabe==0.7.0
 oauthlib==3.2.2
-Pillow==8.3.2
+Pillow==9.3.0
 psycopg2-binary==2.8.6
 pycodestyle==2.9.1
 pycparser==2.21
@@ -43,3 +43,4 @@ typing-extensions==4.4.0
 uritemplate==4.1.1
 urllib3==1.26.12
 zipp==3.10.0
+reportlab==3.6.12

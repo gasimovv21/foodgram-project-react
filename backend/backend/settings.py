@@ -1,8 +1,12 @@
 import os
 
+from dotenv import load_dotenv
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '61nk6ron4gw#fl3%7uqba%5=po9e@yt3#obp65#-es0)#i(no#'
+load_dotenv()
+
+SECRET_KEY = os.getenv('SECRET_KEY', default='*')
 
 DEBUG = True
 
@@ -85,10 +89,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.'
-                                'PageNumberPagination',
-    'PAGE_SIZE': 6,
+    ]
 }
 
 DJOSER = {
@@ -127,4 +128,34 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 APPEND_SLASH = False
+
+# User
+
+MAX_LENGTH_EMAIL = 254
+
+MAX_LENGTH_USERNAME = 150
+
+MAX_LENGTH_FIRST_NAME = 150
+
+MAX_LENGTH_LAST_NAME = 150
+
+# Tag
+
+MAX_LENGTH_TAG_NAME = 50
+
+MAX_LENGTH_TAG_COLOR = 8
+
+MAX_LENGTH_TAG_SLUG = 50
+
+# Ingredient
+
+MAX_LENGTH_INGREDIENT_NAME = 150
+
+MAX_LENGTH_INGREDIENT_MEASURMENT_UNIT = 25
+
+# Recipe
+
+MAX_LENGTH_RECIPE_NAME = 100

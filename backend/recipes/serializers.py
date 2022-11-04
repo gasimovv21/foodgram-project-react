@@ -1,7 +1,7 @@
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
-from users.serializers import CustomUserSerializer
 
+from users.serializers import CustomUserSerializer
 from .models import (Favorite, Ingredient, IngredientInRecipe, Recipe,
                      ShoppingCart, Tag)
 
@@ -78,14 +78,14 @@ class RecipesSerializers(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         user = request.user
-        return Favorite.objects.filter(recipe=obj, user=user).exists()
+        return user.favorite_subscriber.filter(recipe=obj).exists()
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')
         if not request or request.user.is_anonymous:
             return False
         user = request.user
-        return ShoppingCart.objects.filter(recipe=obj, user=user).exists()
+        return user.shoping_cart_owner.filter(recipe=obj).exists()
 
 
 class CreateRecipeSerializers(serializers.ModelSerializer):
@@ -140,14 +140,16 @@ class CreateRecipeSerializers(serializers.ModelSerializer):
             })
         return data
 
-    def create_ingredients(self, ingredients, recipe):
+    @staticmethod
+    def create_ingredients(ingredients, recipe):
         for ingredient in ingredients:
             IngredientInRecipe.objects.create(
                 recipe=recipe,
                 ingredient=ingredient['id'],
                 amount=ingredient['amount'])
 
-    def create_tags(self, tags, recipe):
+    @staticmethod
+    def create_tags(tags, recipe):
         for tag in tags:
             recipe.tags.add(tag)
 
@@ -187,7 +189,7 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         recipe = data['recipe']
-        if Favorite.objects.filter(user=request.user, recipe=recipe).exists():
+        if request.user.favorite_subscriber.filter(recipe=recipe).exists():
             raise serializers.ValidationError({
                 'status': 'Выбранный рецепт уже добавлен в избранные!'
             })
@@ -212,8 +214,7 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         recipe = data['recipe']
-        if ShoppingCart.objects.filter(user=request.user,
-                                       recipe=recipe).exists():
+        if request.user.shoping_cart_owner.filter(recipe=recipe).exists():
             raise serializers.ValidationError({
                 'status': 'Выбранный рецепт уже добавлен в список покупок!'
             })

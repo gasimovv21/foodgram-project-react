@@ -1,19 +1,21 @@
 from django.core.validators import MinValueValidator
+from django.conf import settings
 from django.db import models
+
 from users.models import CustomUser
 
 
 class Tag(models.Model):
     name = models.CharField(
-        max_length=50,
+        max_length=settings.MAX_LENGTH_TAG_NAME,
         verbose_name='Название тэга'
     )
     color = models.CharField(
-        max_length=8,
+        max_length=settings.MAX_LENGTH_TAG_COLOR,
         verbose_name='Цвет тэга'
     )
     slug = models.SlugField(
-        max_length=50,
+        max_length=settings.MAX_LENGTH_TAG_SLUG,
         verbose_name='Уникальный номер тэга'
     )
 
@@ -27,16 +29,16 @@ class Tag(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(
-        max_length=150,
+        max_length=settings.MAX_LENGTH_INGREDIENT_NAME,
         verbose_name='Название ингредиента'
     )
     measurement_unit = models.CharField(
-        max_length=25,
+        max_length=settings.MAX_LENGTH_INGREDIENT_MEASURMENT_UNIT,
         verbose_name='Единица измерения ингредиента'
     )
 
     class Meta:
-        ordering = ['id']
+        ordering = ('name',)
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
@@ -52,7 +54,7 @@ class Recipe(models.Model):
         related_name='recipes'
     )
     name = models.CharField(
-        max_length=100,
+        max_length=settings.MAX_LENGTH_RECIPE_NAME,
         verbose_name='Название рецепта'
     )
     image = models.ImageField(
@@ -60,10 +62,14 @@ class Recipe(models.Model):
         upload_to='recipes/'
     )
     text = models.TextField(
-       verbose_name='Описание рецепта'
+        verbose_name='Описание рецепта'
     )
     cooking_time = models.PositiveSmallIntegerField(
-        verbose_name='Время приготовления рецепта'
+        verbose_name='Время приготовления рецепта',
+        validators=[MinValueValidator(
+            1,
+            message='Минимальное время приготовления'
+                    'должно быть больше или равно 1 мин!')]
     )
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -77,9 +83,14 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        ordering = ['id']
+        ordering = ['name']
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
+
+    def show_ingredients(self):
+
+        return " %s" % (', '.join([ingredient.name for ingredient in self.ingredients.all()]))
+    show_ingredients.short_description = 'Ингредиенты'
 
     def __str__(self):
         return self.name
@@ -120,17 +131,17 @@ class ShoppingCart(models.Model):
         CustomUser,
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
-        related_name='shopping_cart'
+        related_name='shoping_cart_owner'
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         verbose_name='Товар',
-        related_name='shopping_cart',
+        related_name='shopping_cart_recipe',
     )
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['recipe']
         verbose_name = 'Список товара'
         verbose_name_plural = 'Списки товаров'
         constraints = [
