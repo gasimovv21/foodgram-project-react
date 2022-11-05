@@ -83,14 +83,9 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        ordering = ['name']
+        ordering = ('name',)
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-
-    def show_ingredients(self):
-
-        return " %s" % (', '.join([ingredient.name for ingredient in self.ingredients.all()]))
-    show_ingredients.short_description = 'Ингредиенты'
 
     def __str__(self):
         return self.name
@@ -117,7 +112,7 @@ class IngredientInRecipe(models.Model):
     )
 
     class Meta:
-        ordering = ['recipe']
+        ordering = ('recipe',)
         verbose_name = 'Ингредиент рецепта'
         verbose_name_plural = 'Ингредиенты рецепта'
         constraints = [
@@ -141,7 +136,7 @@ class ShoppingCart(models.Model):
     )
 
     class Meta:
-        ordering = ['recipe']
+        ordering = ('recipe',)
         verbose_name = 'Список товара'
         verbose_name_plural = 'Списки товаров'
         constraints = [

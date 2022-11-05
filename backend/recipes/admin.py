@@ -33,10 +33,17 @@ class RecipeAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     empty_value_display = '-пусто-'
 
-    def count_favorite(self, obj):
+    @staticmethod
+    def count_favorite(obj):
 
-        return Favorite.objects.filter(recipe=obj).count()
+        return obj.favorites.count()
     count_favorite.short_description = 'Количество добавлении в избранное'
+
+    @staticmethod
+    def show_ingredients(obj):
+
+        return " %s" % (', '.join([obj.ingredient.name for obj.ingredient in obj.ingredients.all()]))
+    show_ingredients.short_description = 'Ингредиенты'
 
 
 @admin.register(IngredientInRecipe)

@@ -1,4 +1,5 @@
-from django.db.models import Sum
+from os import path
+
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
@@ -98,12 +99,13 @@ class RecipeViewSet(viewsets.ModelViewSet):
             request=request, pk=pk,
             model=ShoppingCart)
 
+    @staticmethod
     @action(detail=False, methods=['GET'],
             permission_classes=[IsAuthenticated])
-    def download_shopping_cart(self, request):
+    def download_shopping_cart(request):
         data_list = {}
         ingredients = IngredientInRecipe.objects.filter(
-            recipe__author=request.user).values_list(
+            recipe__shopping_cart_recipe__user=request.user).values_list(
             'ingredient__name', 'ingredient__measurement_unit',
             'amount', 'recipe__name'
         )
@@ -117,20 +119,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 }
             else:
                 data_list[name]['amount'] += item[2]
-        pdfmetrics.registerFont(TTFont('Arial', 'C:\Windows\Fonts\Arial.ttf'))
+        app_path = path.realpath(path.dirname(__file__))
+        font_path = path.join(app_path, 'font\PFAgoraSlabPro Bold.ttf')
+        pdfmetrics.registerFont(TTFont('PFAgoraSlabPro Bold', font_path))
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = ('attachment;'
                                            'filename="shopping_list.pdf"')
         page = canvas.Canvas(response)
-        page.setFont('Arial', size=25)
+        page.setFont('PFAgoraSlabPro Bold', size=25)
         page.drawString(200, 800, 'Список покупок.')
-        page.setFont('Arial', size=12)
+        page.setFont('PFAgoraSlabPro Bold', size=18)
         height = 750
         for i, (name, data) in enumerate(data_list.items(), 1):
             page.drawString(48, height, (f'{data["recipe"]}:'
                                          f'{i}. {name} - {data["amount"]} '
                                          f'{data["measurement_unit"]}'))
             height -= 25
-            page.showPage()
-            page.save()
+        page.showPage()
+        page.save()
         return response
