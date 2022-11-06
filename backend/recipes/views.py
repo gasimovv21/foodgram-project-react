@@ -1,6 +1,7 @@
 from os import path
 
 from django.http import HttpResponse
+from django.db.models import Count, F, Sum
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from reportlab.pdfbase import pdfmetrics
@@ -100,25 +101,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             model=ShoppingCart)
 
     @staticmethod
-    @action(detail=False, methods=['GET'],
-            permission_classes=[IsAuthenticated])
-    def download_shopping_cart(request):
-        data_list = {}
-        ingredients = IngredientInRecipe.objects.filter(
-            recipe__shopping_cart_recipe__user=request.user).values_list(
-            'ingredient__name', 'ingredient__measurement_unit',
-            'amount', 'recipe__name'
-        )
-        for item in ingredients:
-            name = item[0]
-            if name not in data_list:
-                data_list[name] = {
-                    'measurement_unit': item[1],
-                    'amount': item[2],
-                    'recipe': item[3]
-                }
-            else:
-                data_list[name]['amount'] += item[2]
+    def create_pdf(ingredients):
         app_path = path.realpath(path.dirname(__file__))
         font_path = path.join(app_path, 'font\PFAgoraSlabPro Bold.ttf')
         pdfmetrics.registerFont(TTFont('PFAgoraSlabPro Bold', font_path))
@@ -130,11 +113,21 @@ class RecipeViewSet(viewsets.ModelViewSet):
         page.drawString(200, 800, 'Список покупок.')
         page.setFont('PFAgoraSlabPro Bold', size=18)
         height = 750
-        for i, (name, data) in enumerate(data_list.items(), 1):
-            page.drawString(48, height, (f'{data["recipe"]}:'
-                                         f'{i}. {name} - {data["amount"]} '
-                                         f'{data["measurement_unit"]}'))
+        for ingredient_num, (ingredient) in enumerate(ingredients, 1):
+            page.drawString(
+                48, height, (f'№ {ingredient_num}. {ingredient["ingredient__name"]} - {ingredient["amount_sum"]}'
+                             f'{ingredient["ingredient__measurement_unit"]}'))
             height -= 25
         page.showPage()
         page.save()
         return response
+
+    @action(detail=False, methods=['GET'],
+            permission_classes=[IsAuthenticated])
+    def download_shopping_cart(self, request):
+        ingredients = IngredientInRecipe.objects.filter(
+            recipe__shopping_cart_recipe__user=request.user).values(
+                'ingredient__name', 'ingredient__measurement_unit').annotate(
+                    amount_sum=Sum('amount')).order_by('ingredient__name')
+
+        return self.create_pdf(ingredients=ingredients)
