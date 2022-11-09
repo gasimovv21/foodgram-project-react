@@ -7,7 +7,7 @@ services:
     env_file:
       - ./.env
   backend:
-    image: gasimovv21/infra_backend
+    image: gasimovv21/infra_backend:latest
     restart: always
     volumes:
       - static_value:/backend/static/
@@ -18,7 +18,7 @@ services:
       - ./.env
 
   frontend:
-    image: gasimovv21/infra_backend
+    image: gasimovv21/infra_frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
   nginx:
