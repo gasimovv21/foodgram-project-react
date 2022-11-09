@@ -1,10 +1,9 @@
+from recipes.pagination import CustomPageNumberPagination
 from rest_framework import status
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from recipes.pagination import CustomPageNumberPagination
 
 from .models import CustomUser, Follow
 from .serializers import FollowSerializer, ShowFollowersSerializer
