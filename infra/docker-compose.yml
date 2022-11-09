@@ -13,7 +13,7 @@ services:
     restart: always
     volumes:
       - static_value:/backend/static/
-      - media_value:/backend/media/recipes/images/
+      - media_value:/backend/media/
     depends_on:
       - db
     env_file:
@@ -32,7 +32,7 @@ services:
       - "80:80"
     volumes:
       - static_value:/var/html/static/
-      - media_value:/var/html/media/recipes/images/
+      - media_value:/var/html/media/
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/build:/usr/share/nginx/html/
       - ../docs/:/usr/share/nginx/html/api/docs/
