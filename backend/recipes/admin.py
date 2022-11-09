@@ -42,7 +42,8 @@ class RecipeAdmin(admin.ModelAdmin):
     @staticmethod
     def show_ingredients(obj):
 
-        return " %s" % (', '.join([obj.ingredient.name for obj.ingredient in obj.ingredients.all()]))
+        return " %s" % (', '.join(
+            [obj.ingredient.name for obj.ingredient in obj.ingredients.all()]))
     show_ingredients.short_description = 'Ингредиенты'
 
 

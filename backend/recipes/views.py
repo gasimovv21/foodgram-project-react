@@ -1,7 +1,7 @@
 from os import path
 
+from django.db.models import Sum
 from django.http import HttpResponse
-from django.db.models import Count, F, Sum
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from reportlab.pdfbase import pdfmetrics
@@ -115,8 +115,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
         height = 750
         for ingredient_num, (ingredient) in enumerate(ingredients, 1):
             page.drawString(
-                48, height, (f'№ {ingredient_num}. {ingredient["ingredient__name"]} - {ingredient["amount_sum"]}'
-                             f'{ingredient["ingredient__measurement_unit"]}'))
+                48,
+                height, (f'№ {ingredient_num}.'
+                         f'{ingredient["ingredient__name"]}'
+                         f' - {ingredient["amount_sum"]}'
+                         f'{ingredient["ingredient__measurement_unit"]}'))
             height -= 25
         page.showPage()
         page.save()
