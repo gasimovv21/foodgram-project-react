@@ -8,8 +8,7 @@ services:
       - ./.env
   backend:
     build:
-      context: ../backend
-      dockerfile: Dockerfile
+      image: gasimovv21/infra_backend:latest
     restart: always
     volumes:
       - static_value:/backend/static/
