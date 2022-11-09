@@ -7,8 +7,7 @@ services:
     env_file:
       - ./.env
   backend:
-    build:
-      image: gasimovv21/infra_backend:latest
+    image: gasimovv21/infra_backend
     restart: always
     volumes:
       - static_value:/backend/static/
@@ -19,9 +18,7 @@ services:
       - ./.env
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: gasimovv21/infra_backend
     volumes:
       - ../frontend/:/app/result_build/
   nginx:
