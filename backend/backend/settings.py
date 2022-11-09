@@ -8,7 +8,7 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='*')
 
-DEBUG = os.getenv('DEBUG', default=True)
+DEBUG = os.getenv('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['localhost', 'http://127.0.0.1', 'backend', '*']
 
