@@ -59,7 +59,6 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         verbose_name='Картинка рецепта',
-        upload_to='recipes/'
     )
     text = models.TextField(
         verbose_name='Описание рецепта'
@@ -83,7 +82,7 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        ordering = ('name',)
+        ordering = ('-name',)
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
@@ -150,7 +149,7 @@ class Favorite(models.Model):
         CustomUser,
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
-        related_name='favorite_subscriber'
+        related_name='favorites_user'
     )
     recipe = models.ForeignKey(
         Recipe,

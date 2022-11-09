@@ -78,7 +78,7 @@ class RecipesSerializers(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         user = request.user
-        return user.favorite_subscriber.filter(recipe=obj).exists()
+        return user.favorites_user.filter(recipe=obj).exists()
 
     def get_is_in_shopping_cart(self, obj):
         request = self.context.get('request')
@@ -189,7 +189,7 @@ class FavoriteRecipeSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         recipe = data['recipe']
-        if request.user.favorite_subscriber.filter(recipe=recipe).exists():
+        if request.user.favorites_user.filter(recipe=recipe).exists():
             raise serializers.ValidationError({
                 'status': 'Выбранный рецепт уже добавлен в избранные!'
             })

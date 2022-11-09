@@ -10,7 +10,14 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='*')
 
 DEBUG = os.getenv('DEBUG', default=True)
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
+ALLOWED_HOSTS = ['localhost', 'http://127.0.0.1', 'backend', '*']
+
+ALLOWED_ORIGINS = [
+    'http://localhost', 'http://backend',
+    'https://127.0.0.1', 'https://backend'
+]
+
+CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS.copy()
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -48,6 +55,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.media',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -71,7 +79,7 @@ else:
             'NAME': os.getenv('DB_NAME', default='postgres'),
             'USER': os.getenv('POSTGRES_USER', default='postgres'),
             'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-            'HOST': os.getenv('DB_HOST', default='db'),
+            'HOST': os.getenv('DB_HOST', default='localhost'),
             'PORT': os.getenv('DB_PORT', default='5432')
         }
     }
@@ -134,9 +142,9 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-MEIDA_URL = '/media/'
+MEDIA_URL = '/media/recipes/images/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/recipes/images/')
 
 AUTH_USER_MODEL = 'users.CustomUser'
 

@@ -103,7 +103,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @staticmethod
     def create_pdf(ingredients):
         app_path = path.realpath(path.dirname(__file__))
-        font_path = path.join(app_path, 'font\PFAgoraSlabPro Bold.ttf')
+        font_path = path.join(app_path, 'font/PFAgoraSlabPro Bold.ttf')
         pdfmetrics.registerFont(TTFont('PFAgoraSlabPro Bold', font_path))
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = ('attachment;'
