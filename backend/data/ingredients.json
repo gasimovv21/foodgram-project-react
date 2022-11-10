@@ -1,4 +1,5 @@
-[{"model": "recipes.ingredient", "pk": 2, "fields":{"name": "абрикосовое варенье", "measurement_unit": "г"}},
+[{"model": "recipes.ingredient", "pk": 1, "fields":{"name": "абрикосовые косточки", "measurement_unit": "г"}},
+{"model": "recipes.ingredient", "pk": 2, "fields":{"name": "абрикосовое варенье", "measurement_unit": "г"}},
 {"model": "recipes.ingredient", "pk": 3, "fields":{"name": "абрикосовое пюре", "measurement_unit": "г"}},
 {"model": "recipes.ingredient", "pk": 4, "fields":{"name": "абрикосовый джем", "measurement_unit": "г"}},
 {"model": "recipes.ingredient", "pk": 5, "fields":{"name": "абрикосовый сок", "measurement_unit": "стакан"}},
