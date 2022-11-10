@@ -10,14 +10,14 @@ SECRET_KEY = os.getenv('SECRET_KEY', default='*')
 
 DEBUG = os.getenv('DEBUG', default=False)
 
-ALLOWED_HOSTS = ['localhost', 'http://127.0.0.1', 'backend', '*']
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
 
-ALLOWED_ORIGINS = [
-    'http://localhost', 'http://backend',
-    'https://127.0.0.1', 'https://backend'
+CSRF_TRUSTED_ORIGINS = [
+    'http://*localhost',
+    'https://*localhost',
+    'http://*62.84.120.56',
+    'https://*62.84.120.56',
 ]
-
-CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS.copy()
 
 INSTALLED_APPS = [
     'django.contrib.admin',
