@@ -17,6 +17,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*localhost',
     'http://*62.84.120.56',
     'https://*62.84.120.56',
+    'https://*cook-learn.hopto.org',
+    'http://*cook-learn.hopto.org',
 ]
 
 INSTALLED_APPS = [
