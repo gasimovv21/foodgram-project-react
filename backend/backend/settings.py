@@ -8,17 +8,14 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='*')
 
-DEBUG = os.getenv('DEBUG', default=False)
+DEBUG = os.getenv('DEBUG', default=True)
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', default='*')]
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://*localhost',
-    'https://*localhost',
-    'http://*62.84.120.56',
-    'https://*62.84.120.56',
-    'https://*cook-learn.hopto.org',
-    'http://*cook-learn.hopto.org',
+    'http://localhost',
+    'http://62.84.120.56',
+    'http://cook-teach.sytes.net',
 ]
 
 INSTALLED_APPS = [
