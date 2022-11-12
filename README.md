@@ -1,4 +1,4 @@
-# Food-Gram
+# FoodGram Web-Site
 
 [![Workflow status](https://github.com/gasimovv21/foodgram-project-react/actions/workflows/main.yml/badge.svg)](http://cook-teach.sytes.net/recipes)
 
