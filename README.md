@@ -11,6 +11,44 @@
  
 ### 1) Инструкция по установке:
 
+## Локальная установка:
+- Клонируем репозиторию на компьютер:
+
+```bash
+1) git@github.com:gasimovv21/foodgram-project-react.git
+2) cd foodgram-project-react
+```
+
+- Cоздать и активировать виртуальное окружение:
+
+```bash
+python -m venv venv
+```
+
+```bash
+source venv/Scripts/activate - Windows
+
+source venv/bin/activate - Linux systems
+```
+- Установить зависимости проекта:
+
+```bash
+cd backend/
+
+pip install -r requirements.txt
+```
+
+- Создать и выполнить миграции:
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+- Запуск сервера локально:
+```bash
+python manage.py runserver
+```
+
 ## Наполнение файла env:
 ```
 SECRET_KEY = example(свой ключ, ниже способ как сгенерировать ключ. 🔻)
@@ -89,13 +127,18 @@ sudo docker-compose exec -T backend python manage.py loaddata data/ingredients.j
 sudo docker-compose exec -T backend python manage.py loaddata data/tags.json 
 ```
 
-# После выолнение успешных комманд можете наслаждаться открыв проект по сыллкам ниже:
+5) Открываем прооект по сыллке - http://cook-teach.sytes.net/
 
-```
-http://62.84.120.56/recipes
+## Технологий которыми пользовался при разработке
 
-http://cook-teach.sytes.net/recipes
-```
+- Python
+- Django
+- DRF
+- GitHubActions
+- PostgreSQL
+- Nginx
+- Docker
+- Yandex.Cloud
 
 ### _**Автор:**_
 
