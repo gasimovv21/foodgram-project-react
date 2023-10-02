@@ -2,24 +2,24 @@
 
 [![Workflow status](https://github.com/gasimovv21/foodgram-project-react/actions/workflows/main.yml/badge.svg)](http://cook-teach.sytes.net/recipes)
 
-## **Описание**
-- Вы человек который любит вкусно поесть и готовить? ✨
-- Любите делиться своими рецептами? 🤔
-- фастфуд ? Веган ? ЗОЖ? 🤓
-- Вы пришли прямо по адресу, теперь на просторах интернета есть проект FoodGram где каждому человеку найдётся своё место и любимое блюдо. 🥳
-- Food-Gram. «Продуктовый помощник»: сайт, на котором каждый пользователь может публиковать свои замечательние рецепты, добавлять чужие рецепты в избранное и подписываться на других авторов чтобы следить за рецептами. Сервис «Список покупок» позволит пользователям создавать список продуктов, которые нужно купить для приготовления выбранных блюд.💥
- 
-### 1) Инструкция по установке:
+## **Description**
+- Are you a person who likes to eat delicious food and cook? ✨
+- Do you like to share your recipes? 🤔
+- fast food ? Vegan ? Healthy lifestyle? 🤓
+- You have come right to the address, now there is a FoodGram project on the Internet where everyone will find their place and favorite dish. 🥳
+- Food-Gram. "Grocery Assistant": a website where each user can publish their wonderful recipes, add other people's recipes to favorites and subscribe to other authors to follow the recipes. The Shopping List service will allow users to create a list of products that they need to buy to prepare selected dishes.💥
 
-## Локальная установка:
-- Клонируем репозиторию на компьютер:
+### 1) Installation Instructions:
+
+## Local installation:
+- Clone the repository to a computer:
 
 ```bash
 1) git@github.com:gasimovv21/foodgram-project-react.git
 2) cd foodgram-project-react
 ```
 
-- Cоздать и активировать виртуальное окружение:
+- Create and activate a virtual environment:
 
 ```bash
 python -m venv venv
@@ -29,8 +29,8 @@ python -m venv venv
 source venv/Scripts/activate - Windows
 
 source venv/bin/activate - Linux systems
-```
-- Установить зависимости проекта:
+``
+- Install project dependencies:
 
 ```bash
 cd backend/
@@ -38,32 +38,32 @@ cd backend/
 pip install -r requirements.txt
 ```
 
-- Создать и выполнить миграции:
+- Create and perform migrations:
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-- Запуск сервера локально:
-```bash
+- Running the server locally:
+``bash
 python manage.py runserver
-```
+``
 
-## Наполнение файла env:
-```
-SECRET_KEY = example(свой ключ, ниже способ как сгенерировать ключ. 🔻)
+## Filling the env file:
+``
+SECRET_KEY = example(your key, below is a way to generate a key. 🔻)
 ```
 ```
 from django.core.management.utils import get_random_secret_key
 get_random_secret_key()
 ```
 ```
-DB_ENGINE=django.db.backends.postgresql 
-```
-```
-DB_NAME=example (назовите свой)
-```
-```
+DB_ENGINE=django.db.backends.postgresql
+
+`` ``
+DB_NAME=example (name your
+own)
+`` ``
 POSTGRES_USER=example
 ```
 ```
@@ -76,30 +76,30 @@ DB_HOST=db
 DB_PORT=5432
 ```
 
-### 2) Настройки для Deploy
+###2) Settings for Deploy
 
-В настройках вашего проекта на GitHub Settings->Security->Secrets->Actions нажав кнопку (New repository secret) создадите ниже перечисленные секреты.
+In the settings of your project on GitHub Settings->Security->Secrets->Actions, click (New repository secret) to create the secrets listed below.
 
 ```
-1) DOCKER_USERNAME - Логин от DockerHub https://docs.docker.com/engine/reference/commandline/login/
-2) DOCKER_PASSWORD - Пароль от DockerHub
-3) HOST - IP Адрес вашего сервера
-4) USER - Ммя пользователя для подключения к серверу
-5) PASSPHRASE - Если при создании ssh-ключа вы использовали фразу-пароль, то напишите
-6) SSH_KEY - Приватный ssh-ключ получить можно по команде в терминале cat ~/.ssh/id_rsa
-7) SECRET_KEY - Секретный ключ
-8) DEBUG - Дебаг
-7) DB_ENGINE - Указываем, что работаем с postgresql
-8) DB_NAME - Имя базы данных
-7) POSTGRES_USER - Логин для подключения к базе данных
-8) POSTGRES_PASSWORD - Пароль для подключения к БД
-7) DB_HOST - Название сервиса (контейнера)
-8) DB_PORT - Порт для подключения к БД
+1) DOCKER_USERNAME - Login from DockerHub https://docs.docker.com/engine/reference/commandline/login/
+2) DOCKER_PASSWORD - Password from DockerHub
+3) HOST - IP Address of your server
+4) USER - The number of the user to connect to the server
+5) PASSPHRASE - If you used a passphrase when creating an ssh key, then write
+6) SSH_KEY - A private ssh key can be obtained by command in the terminal cat ~/.ssh/id_rsa
+7) SECRET_KEY - Secret key
+8) DEBUG - Debug
+7) DB_ENGINE - Indicate that we are working with postgresql
+8) DB_NAME - Database name
+7) POSTGRES_USER - Login to connect to the database
+8) POSTGRES_PASSWORD - Password for connecting to the database
+7) DB_HOST - Name of the service (container)
+8) DB_PORT - The port for connecting to the database
 ```
 
-### После того как деплой и тесты на платформе прошли успешно подключаемся к серверу и вводим команды ниже:
+### After the deployment and tests on the platform have passed successfully, we connect to the server and enter the commands below:
 
-1) Создать миграции и применить:
+1) Create migrations and apply:
 
 ```
 sudo docker-compose exec backend python manage.py makemigrations --noinput
@@ -107,19 +107,19 @@ sudo docker-compose exec backend python manage.py makemigrations --noinput
 sudo docker-compose exec backend python manage.py migrate --noinput
 ```
 
-2) Собирать статику:
+2) Collect static:
 
 ```
 sudo docker-compose exec backend python manage.py collectstatic --noinput
 ```
 
-3) Создать суперпользователя:
+3) Create a superuser:
 
 ```
 sudo docker-compose exec backend python manage.py createsuperuser
 ```
 
-4) Пока что в базе данных пусто, так чего ждём?) Загружаем ингредиенты и теги:
+4) So far, the database is empty, so what are we waiting for?) Uploading ingredients and tags:
 
 ```
 sudo docker-compose exec -T backend python manage.py loaddata data/ingredients.json 
@@ -127,9 +127,9 @@ sudo docker-compose exec -T backend python manage.py loaddata data/ingredients.j
 sudo docker-compose exec -T backend python manage.py loaddata data/tags.json 
 ```
 
-5) Открываем прооект по сыллке - http://cook-teach.sytes.net/
+5) We open the project by sending - http://cook-teach.sytes.net/
 
-## Технологий которыми пользовался при разработке
+## Of technologies used during development
 
 - Python
 - Django
@@ -140,10 +140,10 @@ sudo docker-compose exec -T backend python manage.py loaddata data/tags.json
 - Docker
 - Yandex.Cloud
 
-### _**Автор:**_
+### _**Author:**_
 
-- _**Эльтун Гасимов 👨‍💻 - https://github.com/gasimovv21**_
+- _**Eltun Gasimov 👨💻 - https://github.com/gasimovv21**_
 
-# **Поддержали при разработке:**
+# **Supported during development:**
 
-- **Яндекс Практикум 👨‍💻 - https://practicum.yandex.ru/**
+- **Yandex Practicum 👨💻 - https://practicum .yandex.ru/**
